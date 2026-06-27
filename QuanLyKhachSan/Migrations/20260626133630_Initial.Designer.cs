@@ -12,8 +12,8 @@ using QuanLyKhachSan.Data;
 namespace QuanLyKhachSan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260624060348_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260626133630_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,6 +127,9 @@ namespace QuanLyKhachSan.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaDG"));
 
+                    b.Property<int?>("MaDP")
+                        .HasColumnType("int");
+
                     b.Property<int>("MaKH")
                         .HasColumnType("int");
 
@@ -143,6 +146,8 @@ namespace QuanLyKhachSan.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("MaDG");
+
+                    b.HasIndex("MaDP");
 
                     b.HasIndex("MaKH");
 
@@ -1268,6 +1273,11 @@ namespace QuanLyKhachSan.Migrations
 
             modelBuilder.Entity("QuanLyKhachSan.Models.DanhGia", b =>
                 {
+                    b.HasOne("QuanLyKhachSan.Models.DatPhong", "DatPhong")
+                        .WithMany()
+                        .HasForeignKey("MaDP")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("QuanLyKhachSan.Models.KhachHang", "KhachHang")
                         .WithMany()
                         .HasForeignKey("MaKH")
@@ -1279,6 +1289,8 @@ namespace QuanLyKhachSan.Migrations
                         .HasForeignKey("MaLoai")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DatPhong");
 
                     b.Navigation("KhachHang");
 

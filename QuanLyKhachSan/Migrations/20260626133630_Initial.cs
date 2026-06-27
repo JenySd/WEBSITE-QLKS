@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuanLyKhachSan.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -170,35 +170,6 @@ namespace QuanLyKhachSan.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DanhGia",
-                columns: table => new
-                {
-                    MaDG = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MaKH = table.Column<int>(type: "int", nullable: false),
-                    MaLoai = table.Column<int>(type: "int", nullable: false),
-                    SoSao = table.Column<int>(type: "int", nullable: false),
-                    NhanXet = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NgayDanhGia = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DanhGia", x => x.MaDG);
-                    table.ForeignKey(
-                        name: "FK_DanhGia_KhachHang_MaKH",
-                        column: x => x.MaKH,
-                        principalTable: "KhachHang",
-                        principalColumn: "MaKH",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_DanhGia_LoaiPhong_MaLoai",
-                        column: x => x.MaLoai,
-                        principalTable: "LoaiPhong",
-                        principalColumn: "MaLoai",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DatPhong",
                 columns: table => new
                 {
@@ -338,6 +309,42 @@ namespace QuanLyKhachSan.Migrations
                         column: x => x.MaNV,
                         principalTable: "NhanVien",
                         principalColumn: "MaNV",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DanhGia",
+                columns: table => new
+                {
+                    MaDG = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MaKH = table.Column<int>(type: "int", nullable: false),
+                    MaLoai = table.Column<int>(type: "int", nullable: false),
+                    MaDP = table.Column<int>(type: "int", nullable: true),
+                    SoSao = table.Column<int>(type: "int", nullable: false),
+                    NhanXet = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NgayDanhGia = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DanhGia", x => x.MaDG);
+                    table.ForeignKey(
+                        name: "FK_DanhGia_DatPhong_MaDP",
+                        column: x => x.MaDP,
+                        principalTable: "DatPhong",
+                        principalColumn: "MaDP",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DanhGia_KhachHang_MaKH",
+                        column: x => x.MaKH,
+                        principalTable: "KhachHang",
+                        principalColumn: "MaKH",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DanhGia_LoaiPhong_MaLoai",
+                        column: x => x.MaLoai,
+                        principalTable: "LoaiPhong",
+                        principalColumn: "MaLoai",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -559,6 +566,11 @@ namespace QuanLyKhachSan.Migrations
                 name: "IX_ChamCong_MaNV",
                 table: "ChamCong",
                 column: "MaNV");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DanhGia_MaDP",
+                table: "DanhGia",
+                column: "MaDP");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DanhGia_MaKH",
